@@ -50,3 +50,57 @@ clinical_LUAD_m1 = DataFrame(clinical_LUAD$submitter_id,
                              clinical_LUAD$tumor_stage,
                              clinical_LUAD$days_to_last_follow_up,
                              clinical_LUAD$days_to_death)
+
+############TCGA胃腺癌基因数据下载（4个转录组信息文件）
+ibrary(TCGAbiolinks)
+  library(SummarizedExperiment)
+  query.exp.hg38 <- GDCquery(project = “TCGA-STAD”, 
+  data.category = “Transcriptome Profiling”, 
+  data.type = “Gene Expression Quantification”, 
+  workflow.type = “HTSeq - FPKM”)
+  GDCdownload(query.exp.hg38,files.per.chunk = 50)
+  exp.hg38 <- GDCprepare(query = query.exp.hg38)
+  exp.hg38.values <- assay(exp.hg38)
+  rownames(exp.hg38.values) <- values(exp.hg38)$external_gene_name
+  write.csv(exp.hg38.values,file = “stad_exp_hg38_FPKM.csv”)
+ #上面这一段与之前类似 不解释
+ 
+  query.exp.hg38 <- GDCquery(project = “TCGA-STAD”, 
+  data.category = “Transcriptome Profiling”, 
+  data.type = “Gene Expression Quantification”, 
+  workflow.type = “HTSeq - FPKM-UQ”)
+  GDCdownload(query.exp.hg38,files.per.chunk = 50)
+  exp.hg38 <- GDCprepare(query = query.exp.hg38)
+  exp.hg38.values <- assay(exp.hg38)
+  rownames(exp.hg38.values) <- values(exp.hg38)$external_gene_name
+  write.csv(exp.hg38.values,file = “stad_exp_hg38_FPKM_UQ.csv”)
+ #上面这一段与之前类似 不解释
+ 
+  query.exp.hg38 <- GDCquery(project = “TCGA-STAD”, 
+  data.category = “Transcriptome Profiling”, 
+  data.type = “Gene Expression Quantification”, 
+  workflow.type = “HTSeq - Counts”)
+  GDCdownload(query.exp.hg38,files.per.chunk = 50)
+  exp.hg38 <- GDCprepare(query = query.exp.hg38)
+  exp.hg38.values <- assay(exp.hg38)
+  rownames(exp.hg38.values) <- values(exp.hg38)$external_gene_name
+  write.csv(exp.hg38.values,file = “stad_exp_hg38_htseq_counts.csv”)
+  #上面这一段与之前类似 不解释 
+  
+    query.exp <- GDCquery(project = “TCGA-STAD”, 
+  legacy = TRUE,
+   data.category = “Gene expression”,
+   data.type = “Gene expression quantification”,
+   platform = “Illumina HiSeq”, 
+  file.type = “results”,
+   experimental.strategy = “RNA-Seq”)
+   #“legacy”参数的意思不知道是不是我查到的这个
+   #“GDC Data Portal 中的数据是最新经过统一标准整理的，但有些数据还未开放，而 GDC Legacy Archive 中的数据是所有未经处理的数据，更全面”
+   #“data.category”设置成了基因表达
+   #“file.type”文件形式 但是不知道具体什么意思
+  GDCdownload(query.exp,files.per.chunk = 50)
+  stad.hg19 <- GDCprepare(query = query.exp)
+  stad.hg19.exp <- assay(stad.hg19)
+  rownames(stad.hg19.exp) <- values(stad.hg19)$gene_id
+  write.csv(stad.hg19.exp,file = “stad_exp_hg19_rsem.csv”)
+  #上面这一段与之前类似 不解释
