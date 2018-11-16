@@ -57,6 +57,6 @@ dataDEGs <- TCGAanalyze_DEA(mat1 =dataFilt[,samplesNT],
                               )
 #把结果导出到csv
 write.csv(dataDEGsFiltLevel,file="DEA_LUAD.csv")
-#一个问题：为什么使用limma会报错
+#有个问题：使用limma好像会报错
 # Error in limma::makeContrasts(, levels = colnames(design)) : 
 #  argument "ej" is missing, with no default 
