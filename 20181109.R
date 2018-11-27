@@ -1,6 +1,7 @@
 ######转录数据下载
 library(SummarizedExperiment)
 library(TCGAbiolinks)
+?TCGAanalyze_Normalization
 #装了两个包
 
 query.exp.hg38 <- GDCquery(project = "TCGA-LUAD", 
@@ -19,7 +20,7 @@ query.exp.hg38 <- GDCquery(project = "TCGA-LUAD",
 # 详情见这个网站 解释得很清楚 https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/ 
 # ??????????问题：应该是normalized过后的比较好 但是我们还是不知道什么情况下用哪一种
 
-GDCdownload(query.exp.hg38,files.per.chunk = 1）
+GDCdownload(query.exp.hg38,files.per.chunk = 1)
 #这一步开始下载满足上一步条件的数据。括号里分别为文件名和每次允许下载的文件数 
 #"files.per.chunk"参数这里选定了1 意味着文件将一个一个下载。函数说明中说一次下载多个可在数据文件过大时减少下载时的问题
 # ????????????问题：这里数值具体选什么？因为之前胃腺癌的数据比较小也选了50 这个文件300+M却只选了1
