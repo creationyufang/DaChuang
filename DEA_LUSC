@@ -1,0 +1,31 @@
+> source(“http://www.bioconductor.org/biocLite.R”)
+> biocLite("TCGAbiolinks")
+> library(TCGAbiolinks)
+> library(SummarizedExperiment)
+> query=GDCquery(project="TCGA-LUSC",
+data.category="Transcriptome Profiling",
+data.type="Gene Expression Quantification",
+workflow.type="HTSeq - FPKM-UQ")
+> GDCdownload(query)
+> dataLUSC=GDCprepare(query,save=TRUE,
+save.filename="dataLUSC.rda",
+remove.files.prepared=TRUE)
+> samples.information=colData(dataLUSC)
+> dataNorm=TCGAanalyze_Normalization(tabDF=dataLUSC,
+geneInfo=geneInfoHT)
+> dataFilt=TCGAanalyze_Filtering(tabDF=dataNorm,
+method="quantile",
+qnt.cut=0.25)
+> samplesNT=TCGAquery_SampleTypes(barcode=colnames(dataFilt),
+typesample=c("NT"))
+> samplesTP=TCGAquery_SampleTypes(barcode=colnames(dataFilt),
+typesample=c("TP"))
+> dataDEGs=TCGAanalyze_DEA(mat1=dataFilt[,samplesNT],
+mat2=dataFilt[,samplesTP],
+Cond1type="Normal",
+Cond2type="Tumor",
+fdr.cut=0.01,
+logFC.cut=1,
+method="glmLRT")
+> dataDEGsFiltLevel=TCGAanalyze_LevelTab(dataDEGs,"Tumor","Normal",dataFilt[,samplesTP],dataFilt[,samplesNT])                                                          
+> write.csv(dataDEGsFiltLevel,file="DEA_LUSC.csv") 
