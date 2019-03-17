@@ -1,6 +1,6 @@
-#用R处理下，将癌组织和对应的癌旁组织的数据分别提取出来分别作为两组的表达矩阵（gct文件）
+#用R处理下，将癌组织和对应的癌旁组织的数据分别提取出来分别作为两组的表达矩阵
 #以及或者分组文件（cls文件）
-#从上述代码，我获得118个癌组织样本和对应的113个癌旁样本的表达谱数据，并且将Ensembl ID均转化为了Gene symbol
+#从上述代码，我获得tumor_number个癌组织样本和对应的normal_number个癌旁样本的表达谱数据，并且将Ensembl ID均转化为了Gene symbol
 #（避免之后用GSEA时，再用chip做ID转化）；然后可以直接将txt文件作为输入
 library(dplyr)
 library(stringr)
